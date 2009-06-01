@@ -40,14 +40,16 @@ module ActiveRecord
         end
 
         attr_names.each do |attr_name|
-          define_method("#{attr_name}") do
-            read_attribute("#{attr_name}")
-          end
+# Don't override built in reader, writers, they handle time zone conversions          
+#           define_method("#{attr_name}") do
+#             read_attribute("#{attr_name}")
+#           end
 
-          define_method("#{attr_name}=") do |time|
-            write_attribute("#{attr_name}", time)
-            write_attribute("#{attr_name}_string", nil)
-          end
+# TODO: refactor to allow keeping both attributes in sync without bypassing time zone conversions
+#           define_method("#{attr_name}=") do |time|
+#             write_attribute("#{attr_name}", time)
+#             write_attribute("#{attr_name}_string", nil)
+#           end
 
           define_method("#{attr_name}_string_before_type_cast") do
             send("#{attr_name}_string")
